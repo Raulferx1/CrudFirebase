@@ -54,7 +54,7 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel,MainAdapter.m
         holder.editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // ... (Código de edición)
+
             }
         });
 
@@ -75,7 +75,7 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel,MainAdapter.m
                                     public void onSuccess(Void unused) {
                                         Toast.makeText(holder.nombre.getContext(), "Eliminado correctamente", Toast.LENGTH_SHORT).show();
 
-                                        // Notificar al adaptador del cambio
+
                                         notifyItemRemoved(position);
                                         notifyItemRangeChanged(position, getItemCount());
                                     }
