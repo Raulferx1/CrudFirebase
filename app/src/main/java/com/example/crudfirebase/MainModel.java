@@ -2,13 +2,14 @@ package com.example.crudfirebase;
 
 public class MainModel {
     String Nombre, Apellido, email, imgURL;
-    public MainModel(){
+
+    public MainModel() {
 
     }
 
-    public MainModel(String nombre, String apellido, String email, String imgURL){
-        Nombre = nombre;
-        Apellido = apellido;
+    public MainModel(String nombre, String apellido, String email, String imgURL) {
+        this.Nombre = nombre;
+        this.Apellido = apellido;
         this.email = email;
         this.imgURL = imgURL;
     }
@@ -18,7 +19,7 @@ public class MainModel {
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.Nombre = nombre;
     }
 
     public String getApellido() {
@@ -26,7 +27,7 @@ public class MainModel {
     }
 
     public void setApellido(String apellido) {
-        Apellido = apellido;
+        this.Apellido = apellido;
     }
 
     public String getEmail() {

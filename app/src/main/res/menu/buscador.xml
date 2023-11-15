@@ -7,7 +7,7 @@
         android:icon="@drawable/baseline_image_search_24"
         android:title="Buscador"
         app:showAsAction="always"
-        app:actionProviderClass="android.widget.SearchView"/>
+        app:actionViewClass="android.widget.SearchView"/>
 
 
 </menu>
