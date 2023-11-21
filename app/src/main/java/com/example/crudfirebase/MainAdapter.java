@@ -34,7 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainAdapter extends FirebaseRecyclerAdapter<MainModel,MainAdapter.myViewHolder> {
 
 
-    public MainAdapter(@NonNull FirebaseRecyclerOptions<MainModel> options){
+    public MainAdapter(@NonNull FirebaseRecyclerOptions<MainModel> options) {
         super(options);
     }
 
@@ -54,7 +54,62 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel,MainAdapter.m
         holder.editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(holder.img.getContext());
+                final View view = LayoutInflater.from(holder.img.getContext()).inflate(R.layout.ventana_emergente, null);
 
+                builder.setView(view);
+                final AlertDialog alertDialog = builder.create();
+
+                final EditText nombreEditText = view.findViewById(R.id.nombreText);
+                final EditText apellidoText = view.findViewById(R.id.apellidoText);
+                final EditText emailText = view.findViewById(R.id.emailText);
+                final EditText imageURLText = view.findViewById(R.id.img1Text);
+
+                Button actualizarBtn = view.findViewById(R.id.btn_actualizar);
+
+                nombreEditText.setText(model.getNombre());
+                apellidoText.setText(model.getApellido());
+                emailText.setText(model.getEmail());
+                imageURLText.setText(model.getImgURL());
+
+                actualizarBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String nuevoNombre = nombreEditText.getText().toString().trim();
+                        String nuevoApellido = apellidoText.getText().toString().trim();
+                        String nuevoEmail = emailText.getText().toString().trim();
+                        String nuevaImgURL = imageURLText.getText().toString().trim();
+
+                        if (!nuevoNombre.isEmpty() && !nuevoApellido.isEmpty() && !nuevoEmail.isEmpty() && !nuevaImgURL.isEmpty()) {
+
+                            Map<String, Object> actualizacion = new HashMap<>();
+                            actualizacion.put("Nombre", nuevoNombre);
+                            actualizacion.put("Apellido", nuevoApellido);
+                            actualizacion.put("email", nuevoEmail);
+                            actualizacion.put("imgURL", nuevaImgURL);
+
+                            FirebaseDatabase.getInstance().getReference().child("Programación Android")
+                                    .child(getRef(position).getKey()).updateChildren(actualizacion)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Toast.makeText(holder.img.getContext(), "Actualizado correctamente", Toast.LENGTH_SHORT).show();
+                                            alertDialog.dismiss();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(holder.img.getContext(), "Error al actualizar", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        } else {
+                            Toast.makeText(holder.img.getContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                alertDialog.show();
             }
         });
 
@@ -74,7 +129,6 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel,MainAdapter.m
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Toast.makeText(holder.nombre.getContext(), "Eliminado correctamente", Toast.LENGTH_SHORT).show();
-
 
                                         notifyItemRemoved(position);
                                         notifyItemRangeChanged(position, getItemCount());
